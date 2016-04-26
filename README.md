@@ -39,7 +39,8 @@ aws_secret_access_key = XXXXXXXXXX
 
 ##  Deploying
 ```
-$ gulp --env==ENV --role=arn:aws:iam::810385116814:role/JemRayfieldsLambdaExecutionRole
+$ gulp --env=test --role=arn:aws:iam::810385116814:role/JemRayfieldsLambdaExecutionRole
+$ gulp --env=prod --role=arn:aws:iam::{accountId}:role/{role}
 ```
 
 ## Testing
