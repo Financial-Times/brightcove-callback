@@ -72,11 +72,6 @@ gulp.task('compile', function(callback) {
          sequence('compile:clean', ['compile:js'], callback);
 });
 
-/**
-*  * For uploading the first time.
-*   * Subsequent updates on a function that has already been created only
-*    * require the name of the function (see task below).
-*     */
 var lambda_params = {
         FunctionName: 'BrightCoveCallBackAPI',
         Role: gutil.env.role

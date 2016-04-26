@@ -1,13 +1,14 @@
-var AWS = require('aws-sdk');
-var dynamodb = new AWS.DynamoDB();
+var aws = require('aws-sdk');
 
 exports.handler = function(event, context) {
+    var dynamodb = new aws.DynamoDB();
     console.log("Request received:\n", JSON.stringify(event));
     console.log("Context received:\n", JSON.stringify(context));
 
-    var tableName = "BrightcoveCallbacks";
+    var tableName = "BrightcoveCallBackJSON";
     var datetime = new Date().getTime().toString();
 
+    console.log("Putting item into Dynamo");
     dynamodb.putItem({ "TableName": tableName,
                    "Item": { "status": { "S": event.status },
                              "notificationTimeDate": {"N": datetime },
