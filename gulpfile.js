@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var aws = require('aws-sdk');
 var runSequence = require('run-sequence');
 var concat = require('gulp-concat');
 var del = require('del');
@@ -11,6 +12,7 @@ var uglify = require('gulp-uglify');
 var wrap = require('gulp-wrap');
 var zip    = require('gulp-zip');
 var lambda = require('gulp-awslambda');
+var cloudformation = require('gulp-cloudformation');
 
 var paths = {};
 
@@ -61,7 +63,6 @@ gulp.task('compile:clean', function(callback) {
 });
 
 gulp.task('compile:js', function() {
-    // We're writing plain old JS so this is a little simple
     return gulp.src([ paths.src.js, ])
                            .pipe(isDev ? gutil.noop() : concat('index.js'))
                            .pipe(isDev ? gutil.noop() : uglify())
@@ -81,11 +82,53 @@ var aws_opts = {
         region: 'eu-west-1'
 };
 
-gulp.task('deploy', function(callback) {
+gulp.task('deploy:dynamotable', function(callback) {
+    var cloudformation_template = 'cloudformation/' + gutil.env.env + '-dynamo-brightcovetable.json';
+    aws.config.credentials = new aws.SharedIniFileCredentials({ profile: gutil.env.env });
+    return gulp.src([cloudformation_template])
+        .pipe(cloudformation.init({   //Only validates the stack files
+                region: aws_opts.region,
+                accessKeyId: aws.config.credentials.accessKeyId,
+                secretAccessKey: aws.config.credentials.secretAccessKey
+            })
+            .pipe(cloudformation.deploy({
+                // Capabilities: [ 'CAPABILITY_IAM' ] //needed if deploying IAM Roles
+            }))
+            .on('error', function(error) {
+                gutil.log('Unable to deploy dynamo table exiting With Error', error);
+                throw error;
+            }));
+});
+
+gulp.task('deploy:apigw', function(callback) {
+    var cloudformation_template = 'cloudformation/' + gutil.env.env + '-api-gw-brightcovecallback-post.json';
+    aws.config.credentials = new aws.SharedIniFileCredentials({ profile: gutil.env.env });
+    // gutil.log('Access key: ' + aws.config.credentials.accessKeyId);
+    // gutil.log('Secret key: ' + aws.config.credentials.secretAccessKey);
+    return gulp.src([cloudformation_template])
+        .pipe(cloudformation.init({   //Only validates the stack files
+                region: aws_opts.region,
+                accessKeyId: aws.config.credentials.accessKeyId,
+                secretAccessKey: aws.config.credentials.secretAccessKey
+            })
+            .pipe(cloudformation.deploy({
+                // Capabilities: [ 'CAPABILITY_IAM' ] //needed if deploying IAM Roles
+            }))
+            .on('error', function(error) {
+                gutil.log('Unable to deploy api-gw exiting With Error', error);
+                throw error;
+            }));
+});
+
+gulp.task('deploy:lambda', function(callback) {
     return  gulp.src('index.js')
             .pipe(zip('archive.zip'))
             .pipe(lambda(lambda_params, aws_opts, gutil.env.env))
             .pipe(gulp.dest('.'));
+});
+
+gulp.task('deploy', function(callback) {
+    sequence('deploy:dynamotable', 'deploy:lambda', 'deploy:apigw', callback);
 });
 
 gulp.task('default', function(callback) {

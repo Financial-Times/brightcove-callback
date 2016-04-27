@@ -5,7 +5,7 @@ exports.handler = function(event, context) {
     console.log("Request received:\n", JSON.stringify(event));
     console.log("Context received:\n", JSON.stringify(context));
 
-    var tableName = "BrightcoveCallBackJSON";
+    var tableName = "BrightcoveCallBackEvents";
     var datetime = new Date().getTime().toString();
 
     console.log("Putting item into Dynamo");
@@ -15,7 +15,7 @@ exports.handler = function(event, context) {
                              "entity": { "S": event.entity },
                              "entityType": { "S": event.entityType },
                              "action": { "S": event.action },
-                             "version": { "N": event.version }
+                             "versionNumber": { "N": event.version }
                             }
                     }, function(err, data) {
                         if (err) {

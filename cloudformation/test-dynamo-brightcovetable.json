@@ -1,0 +1,47 @@
+{
+  "Resources" : {
+    "BrightcoveCallBackEvents" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "TableName" : "BrightcoveCallBackEvents",
+        "AttributeDefinitions" : [
+          {
+            "AttributeName" : "notificationTimeDate",
+            "AttributeType" : "N"
+          },
+          {
+            "AttributeName" : "entity",
+            "AttributeType" : "S"
+          }
+        ],
+        "KeySchema" : [
+          {
+            "AttributeName" : "entity",
+            "KeyType" : "HASH"
+          }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : "5",
+          "WriteCapacityUnits" : "5"
+        },
+        "GlobalSecondaryIndexes" : [{
+          "IndexName" : "notifcationTimeDateGSI",
+          "KeySchema" : [
+            {
+              "AttributeName" : "notificationTimeDate",
+              "KeyType" : "HASH"
+            }
+          ],
+          "Projection" : {
+            "NonKeyAttributes" : ["status","entity","entityType","action","version"],
+            "ProjectionType" : "INCLUDE"
+          },
+          "ProvisionedThroughput" : {
+            "ReadCapacityUnits" : "5",
+            "WriteCapacityUnits" : "5"
+          }
+        }]
+      }
+    }
+  }
+}
