@@ -21,9 +21,11 @@
         "RestApiId": { "Ref": "BrightcoveCallbacksAPI" },
         "ResourceId": { "Ref": "brightcovecallback" },
         "HttpMethod": "POST",
+        "MethodResponses": [{ "StatusCode" : "200" }],
         "AuthorizationType": "NONE",
         "Integration": { "IntegrationHttpMethod" : "POST",
                          "Type" : "AWS",
+                         "IntegrationResponses" : [ { "StatusCode" : "200" } ],
                          "Uri"  : "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:810385116814:function:BrightCoveCallBackAPI/invocations" }
       }
     },
