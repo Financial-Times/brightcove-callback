@@ -6,8 +6,8 @@
         "TableName" : "BrightcoveCallBackEvents",
         "AttributeDefinitions" : [
           {
-            "AttributeName" : "notificationTimeDate",
-            "AttributeType" : "N"
+            "AttributeName" : "notificationDateTime",
+            "AttributeType" : "S"
           },
           {
             "AttributeName" : "entity",
@@ -18,6 +18,10 @@
           {
             "AttributeName" : "entity",
             "KeyType" : "HASH"
+          },
+          {
+            "AttributeName" : "notificationDateTime",
+            "KeyType" : "RANGE"
           }
         ],
         "ProvisionedThroughput" : {
@@ -28,7 +32,7 @@
           "IndexName" : "notifcationTimeDateGSI",
           "KeySchema" : [
             {
-              "AttributeName" : "notificationTimeDate",
+              "AttributeName" : "notificationDateTime",
               "KeyType" : "HASH"
             }
           ],

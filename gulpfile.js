@@ -101,7 +101,7 @@ gulp.task('deploy:dynamotable', function(callback) {
 });
 
 gulp.task('deploy:apigw', function(callback) {
-    var cloudformation_template = 'cloudformation/' + gutil.env.env + '-api-gw-brightcovecallback-post.json';
+    var cloudformation_template = 'cloudformation/' + gutil.env.env + '-api-gw-brightcove.json';
     aws.config.credentials = new aws.SharedIniFileCredentials({ profile: gutil.env.env });
     // gutil.log('Access key: ' + aws.config.credentials.accessKeyId);
     // gutil.log('Secret key: ' + aws.config.credentials.secretAccessKey);

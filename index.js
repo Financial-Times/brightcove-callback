@@ -6,12 +6,13 @@ exports.handler = function(event, context) {
     console.log("Context received:\n", JSON.stringify(context));
 
     var tableName = "BrightcoveCallBackEvents";
-    var datetime = new Date().getTime().toString();
+    var datetime = new Date().toISOString();
+
 
     console.log("Putting item into Dynamo");
     dynamodb.putItem({ "TableName": tableName,
                    "Item": { "status": { "S": event.status },
-                             "notificationTimeDate": {"N": datetime },
+                             "notificationDateTime": {"S": datetime },
                              "entity": { "S": event.entity },
                              "entityType": { "S": event.entityType },
                              "action": { "S": event.action },
