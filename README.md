@@ -47,5 +47,5 @@ $ gulp --env=prod --role=arn:aws:iam::{accountId}:role/{role}
 
 ```
 $ npm install nodeunit -g
-$ nodeunit test/index.test.js
+$ nodeunit test/index.good.test.js
 ```

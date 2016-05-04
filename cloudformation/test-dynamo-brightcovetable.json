@@ -37,14 +37,15 @@
             }
           ],
           "Projection" : {
-            "NonKeyAttributes" : ["status","entity","entityType","action","version"],
+            "NonKeyAttributes" : ["entityStatus","entity","entityType","actionType","versionNumber"],
             "ProjectionType" : "INCLUDE"
           },
           "ProvisionedThroughput" : {
             "ReadCapacityUnits" : "5",
             "WriteCapacityUnits" : "5"
           }
-        }]
+        }],
+        "StreamSpecification" : { "StreamViewType" : "NEW_IMAGE"}
       }
     }
   }
