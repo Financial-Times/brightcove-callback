@@ -50,9 +50,7 @@
         },
         "HttpMethod": "POST",
         "MethodResponses": [
-          {
-            "StatusCode": "200"
-          }
+          {"StatusCode": "200"}
         ],
         "AuthorizationType": "NONE",
         "Integration": {
@@ -60,9 +58,7 @@
           "Type": "AWS",
           "Credentials": "arn:aws:iam::<%= accountforrole %>:role/FTFlexServices-Deployer",
           "IntegrationResponses": [
-            {
-              "StatusCode": "200"
-            }
+            {"StatusCode": "200"}
           ],
           "Uri"  : { "Fn::Join" : [ "", ["arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/", { "Fn::GetAtt": ["brightcovecallbackapilambda", "Arn"] }, "/invocations" ]] }
         }
