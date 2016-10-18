@@ -98,7 +98,8 @@ gulp.task('deploy:cloudformation-template', function() {
     gulp.src('cloudformation/flex-cloudformation-brightcove-callback.json')
         .pipe(template({lambdarole: gutil.env.lambdarole,
             account: gutil.env.account,
-            accountforrole: gutil.env.account}))
+            accountforrole: gutil.env.account,
+            environment: gutil.env.env}))
         .pipe(gulp.dest('cloudformation/' + gutil.env.env));
 });
 
